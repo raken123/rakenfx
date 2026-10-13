@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tores Musiklektion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="brand-dot"></span>
+    <h1>Tores <em>Musik</em>lektion</h1>
+  </div>
+  <p class="hype" id="hype">Dagens lektion: du sjunger, GPT 6 Astra spelar bandet.</p>
+  <div class="top-right">
+    <span class="status" id="status">Kollar Astra…</span>
+    <button class="me" id="me-btn" type="button" title="Byt namn"><span id="me-name">Vem är du?</span></button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" class="tab" data-tab="sing" aria-selected="true">🎤 Sjung</button>
+  <button role="tab" class="tab" data-tab="studio" aria-selected="false">🎛️ Studio</button>
+  <button role="tab" class="tab" data-tab="groups" aria-selected="false">👥 Grupper</button>
+</nav>
+
+<main>
+
+<!-- ============ SJUNG ============ -->
+<section id="view-sing" class="view">
+  <div class="stage">
+    <button class="rec" id="rec-btn" type="button" aria-label="Spela in">
+      <span class="rec-ring"></span>
+      <span class="rec-core"></span>
+    </button>
+    <div class="rec-info">
+      <div class="rec-time" id="rec-time">0:00</div>
+      <div class="rec-note" id="rec-note">Tryck och sjung</div>
+      <div class="meter"><div class="meter-fill" id="meter"></div></div>
+      <label class="upload">eller <input type="file" id="upload" accept="audio/*"> <span>ladda upp en inspelning</span></label>
+    </div>
+  </div>
+
+  <div class="take" id="take" hidden>
+    <div class="take-row">
+      <button class="btn ghost" id="take-play" type="button">▶ Lyssna på din sång</button>
+      <span class="take-meta" id="take-meta"></span>
+    </div>
+
+    <h2>Vilken stil?</h2>
+    <div class="chips" id="style-chips">
+      <button class="chip on" type="button">Pop</button>
+      <button class="chip" type="button">Hiphop</button>
+      <button class="chip" type="button">Rock</button>
+      <button class="chip" type="button">EDM</button>
+      <button class="chip" type="button">Ballad</button>
+      <button class="chip" type="button">Disco</button>
+      <button class="chip" type="button">Reggae</button>
+      <button class="chip" type="button">Lo-fi</button>
+    </div>
+    <input class="field" id="style-extra" placeholder="Något mer? t.ex. &quot;som en filmtrailer&quot; eller &quot;mycket bas&quot;">
+
+    <button class="btn big hot" id="make-btn" type="button">✨ Gör full instrumentalversion med GPT 6 Astra</button>
+    <ol class="steps" id="steps" hidden>
+      <li data-step="melody">Lyssnar på dina toner</li>
+      <li data-step="lyrics">Skriver ner texten</li>
+      <li data-step="astra">GPT 6 Astra arrangerar bandet</li>
+      <li data-step="done">Klart, till studion!</li>
+    </ol>
+  </div>
+
+  <div class="idea card">
+    <h2>Ingen sång just nu?</h2>
+    <p>Beskriv en låt så gör Astra en beat du kan sjunga till.</p>
+    <div class="row">
+      <input class="field" id="idea" placeholder="t.ex. glad sommarlåt om att lektionen är slut">
+      <button class="btn" id="idea-btn" type="button">Skapa</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDIO ============ -->
+<section id="view-studio" class="view" hidden>
+  <div class="transport">
+    <button class="btn play" id="play-btn" type="button">▶ Spela</button>
+    <label class="tempo">BPM <input type="range" id="bpm" min="60" max="180" value="100"><output id="bpm-out">100</output></label>
+    <label class="check"><input type="checkbox" id="loop" checked> Loopa</label>
+    <label class="check" id="vocal-toggle-wrap"><input type="checkbox" id="vocal-on" checked> Sång</label>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="export-full" type="button">⬇ WAV med sång</button>
+    <button class="btn ghost" id="export-inst" type="button">⬇ Bara instrumental</button>
+  </div>
+
+  <div class="song-head">
+    <input class="title-in" id="title" value="Min låt" aria-label="Låtens namn">
+    <div class="song-meta">
+      <label>Tonart <input class="field small" id="key" value="C major"></label>
+      <label>Intro <input class="field tiny" id="intro" type="number" min="0" max="4" value="0"> takter</label>
+      <label id="offset-wrap">Sång-start <input type="range" id="offset" min="-2" max="2" step="0.05" value="0"><output id="offset-out">0.00 s</output></label>
+    </div>
+    <p class="astra-says" id="astra-says" hidden></p>
+  </div>
+
+  <div class="card astra-box">
+    <div class="astra-label"><span class="astra-dot"></span> GPT 6 Astra · producera manuellt</div>
+    <div class="row">
+      <input class="field" id="ask" placeholder="t.ex. &quot;tyngre trummor i refrängen&quot;, &quot;byt till moll&quot;, &quot;lägg en melodi på slutet&quot;">
+      <button class="btn hot" id="ask-btn" type="button">Fråga Astra</button>
+    </div>
+    <p class="hint">Ett klick = en ändring. Astra gör bara det du ber om, och du kan ändra allt för hand efteråt.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Ackord <small>ett per takt</small></h2>
+      <div class="row tight">
+        <button class="btn tiny" id="bar-del" type="button">− takt</button>
+        <button class="btn tiny" id="bar-add" type="button">+ takt</button>
+      </div>
+    </div>
+    <div class="chords" id="chords"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Beat</h2>
+      <div class="row tight">
+        <label class="sel">Bas <select id="inst-bass"><option value="sub">Sub</option><option value="pluck">Pluck</option><option value="synth">Synth</option></select></label>
+        <label class="sel">Ackord <select id="inst-chords"><option value="piano">Piano</option><option value="pad">Pad</option><option value="organ">Orgel</option><option value="pluck">Pluck</option></select></label>
+      </div>
+    </div>
+    <div class="grid" id="beat-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Melodi <small>takt <span id="roll-bar-label">1</span></small></h2>
+      <div class="row tight">
+        <button class="btn tiny" id="roll-prev" type="button">◀</button>
+        <button class="btn tiny" id="roll-next" type="button">▶</button>
+        <label class="sel">Längd <select id="roll-len"><option value="1">1/16</option><option value="2" selected>1/8</option><option value="4">1/4</option><option value="8">1/2</option></select></label>
+        <label class="sel">Ljud <select id="inst-lead"><option value="saw">Saw</option><option value="square">Square</option><option value="bell">Klocka</option><option value="flute">Flöjt</option></select></label>
+        <button class="btn tiny" id="roll-clear" type="button">Rensa takt</button>
+      </div>
+    </div>
+    <div class="roll" id="roll"></div>
+  </div>
+
+  <div class="card">
+    <h2>Mixer</h2>
+    <div class="mixer" id="mixer"></div>
+  </div>
+
+  <div class="card share">
+    <h2>Dela med gruppen</h2>
+    <div class="row">
+      <select class="field" id="share-group"></select>
+      <button class="btn" id="share-btn" type="button">Spara i gruppen</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GRUPPER ============ -->
+<section id="view-groups" class="view" hidden>
+  <div class="card">
+    <h2>Starta en grupp</h2>
+    <div class="row">
+      <input class="field" id="group-name" placeholder="Gruppens namn, t.ex. Bandet Utan Namn" maxlength="40">
+      <button class="btn hot" id="group-create" type="button">Skapa</button>
+    </div>
+    <p class="hint">Alla kan gå med i alla grupper. Låtar ni sparar syns för hela gruppen.</p>
+  </div>
+  <div class="groups" id="groups"></div>
+</section>
+
+</main>
+
+<dialog id="name-dialog">
+  <form method="dialog" class="name-form">
+    <h2>Vad heter du?</h2>
+    <input class="field" id="name-input" maxlength="40" required autocomplete="nickname">
+    <button class="btn hot" value="ok">Kör!</button>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

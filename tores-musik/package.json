@@ -1,0 +1,12 @@
+{
+  "name": "tores-musiklektion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sjung, så gör GPT 6 Astra ett helt band av låten.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

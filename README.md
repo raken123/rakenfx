@@ -10,3 +10,7 @@ A small lab of playful AI experiments in one self-contained page. Open `index.ht
 | FX-04 | Hello Workie! | A phone helper (Android) whose face flies to your Mac or Windows computer, does a task, and flies back. |
 
 This is a prototype: model calls are simulated in the browser, so nothing typed leaves the page. The 3D viewer loads three.js r128 from cdnjs.
+
+## Tores Musiklektion
+
+A separate, real app (not simulated) in [`tores-musik/`](tores-musik/README.md): sing, and GPT 6 Astra arranges a full band around your song. Runs on a small Node server that keeps the OpenAI key out of the browser.
